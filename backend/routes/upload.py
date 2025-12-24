@@ -44,6 +44,17 @@ async def upload_image(file: UploadFile = File(...)):
 @router.post("/image-base64", response_model=dict)
 async def upload_image_base64(data: dict):
     """Upload image from base64 data"""
+
+
+from fastapi.responses import FileResponse
+
+@router.get("/image/{filename}")
+async def get_image(filename: str):
+    """Serve uploaded image"""
+    file_path = UPLOADS_DIR / filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Image not found")
+    return FileResponse(file_path)
     try:
         base64_string = data.get('image')
         if not base64_string:
