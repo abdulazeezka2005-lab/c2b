@@ -123,11 +123,20 @@ const AdminDashboard = () => {
         }
       });
       
-      const imageUrl = `${BACKEND_URL}${response.data.url}`;
+      // Use full backend URL for image
+      const imageUrl = response.data.url.startsWith('http') 
+        ? response.data.url 
+        : `${BACKEND_URL}${response.data.url}`;
+      
       setFormData(prev => ({ ...prev, image: imageUrl }));
       toast({ title: "Success", description: "Image uploaded successfully" });
     } catch (error) {
-      toast({ title: "Error", description: "Failed to upload image", variant: "destructive" });
+      console.error('Upload error:', error);
+      toast({ 
+        title: "Error", 
+        description: error.response?.data?.detail || "Failed to upload image", 
+        variant: "destructive" 
+      });
     } finally {
       setUploadingImage(false);
     }
