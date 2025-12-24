@@ -55,24 +55,21 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
-            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-              <div className="text-4xl mb-2">✓</div>
-              <h3 className="font-bold text-lg text-gray-900 mb-1">100% Genuine</h3>
-              <p className="text-gray-600 text-sm">Authentic products guaranteed</p>
+          {/* Trust Indicators - Minimized */}
+          <div className="flex flex-wrap justify-center gap-6 max-w-3xl mx-auto mt-8">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="text-green-600 text-xl">✓</span>
+              <span className="font-semibold">100% Genuine</span>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-              <div className="text-4xl mb-2">🚚</div>
-              <h3 className="font-bold text-lg text-gray-900 mb-1">Fast Delivery</h3>
-              <p className="text-gray-600 text-sm">Quick shipping across India</p>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="text-green-600 text-xl">✓</span>
+              <span className="font-semibold">Fast Delivery</span>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-              <div className="text-4xl mb-2">💬</div>
-              <h3 className="font-bold text-lg text-gray-900 mb-1">24/7 Support</h3>
-              <p className="text-gray-600 text-sm">Always here to help via WhatsApp</p>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="text-green-600 text-xl">✓</span>
+              <span className="font-semibold">24/7 Support</span>
             </div>
           </div>
         </div>
