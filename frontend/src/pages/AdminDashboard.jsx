@@ -244,6 +244,8 @@ const AdminDashboard = () => {
       inStock: true
     });
     setEditingProduct(null);
+    setImagePreview('');
+    setImageFile(null);
   };
 
   const filteredProducts = selectedCategory === 'all'
