@@ -10,8 +10,8 @@ const ProductCard = ({ product, onAddToCart, onWhatsAppOrder }) => {
   const getImageUrl = (imageUrl) => {
     if (!imageUrl) return 'https://via.placeholder.com/400';
     if (imageUrl.startsWith('http')) return imageUrl;
-    // Handle both /uploads/ and /api/uploads/ paths
-    if (imageUrl.startsWith('/api/uploads/') || imageUrl.startsWith('/uploads/')) {
+    // Handle API upload paths
+    if (imageUrl.startsWith('/api/')) {
       return `${BACKEND_URL}${imageUrl}`;
     }
     return imageUrl;
