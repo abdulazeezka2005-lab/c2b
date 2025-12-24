@@ -29,7 +29,7 @@ const Cart = ({ cart, setCart }) => {
 
   const handleWhatsAppCheckout = async () => {
     try {
-      const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '1234567890';
+      const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '916380832058';
       // Save order to backend
       const orderData = {
         items: cart.map(item => ({
@@ -65,6 +65,89 @@ const Cart = ({ cart, setCart }) => {
         description: "Failed to save order. Please try again.",
         variant: "destructive"
       });
+    }
+  };
+
+  const handleOnlinePayment = async () => {
+    setPaymentLoading(true);
+    try {
+      // Create order in database first
+      const orderData = {
+        items: cart.map(item => ({
+          productId: item._id,
+          productName: item.name,
+          price: item.price,
+          quantity: item.quantity
+        })),
+        customerPhone: "6380832058" // Your mobile number
+      };
+
+      const orderResponse = await axios.post(`${API}/orders`, orderData);
+      const orderId = orderResponse.data.order._id;
+
+      // Get Razorpay config
+      const configResponse = await axios.get(`${API}/payments/config`);
+      const razorpayKey = configResponse.data.key;
+
+      // Create Razorpay order
+      const paymentOrderResponse = await axios.post(`${API}/payments/create-order`, {
+        amount: totalAmount * 100, // Convert to paise
+        currency: "INR",
+        orderId: orderId
+      });
+
+      // Initialize Razorpay
+      const options = {
+        key: razorpayKey,
+        amount: paymentOrderResponse.data.amount,
+        currency: paymentOrderResponse.data.currency,
+        order_id: paymentOrderResponse.data.orderId,
+        name: "C2B - Click to Buy",
+        description: "Product Purchase",
+        image: "https://via.placeholder.com/150?text=C2B",
+        handler: async function (response) {
+          try {
+            // Verify payment
+            await axios.post(`${API}/payments/verify`, {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            });
+
+            toast({
+              title: "Payment Successful!",
+              description: "Your order has been placed successfully.",
+            });
+
+            // Clear cart
+            setCart([]);
+          } catch (error) {
+            toast({
+              title: "Payment Verification Failed",
+              description: "Please contact support with your payment details.",
+              variant: "destructive"
+            });
+          }
+        },
+        prefill: {
+          contact: "6380832058"
+        },
+        theme: {
+          color: "#9333EA" // Purple color
+        }
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast({
+        title: "Payment Failed",
+        description: error.response?.data?.detail || "Unable to process payment. Try WhatsApp order.",
+        variant: "destructive"
+      });
+    } finally {
+      setPaymentLoading(false);
     }
   };
 
