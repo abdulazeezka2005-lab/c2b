@@ -31,7 +31,7 @@ async def upload_image(file: UploadFile = File(...)):
             f.write(contents)
         
         # Return relative URL with /api prefix for proper routing
-        image_url = f"/api/uploads/{unique_filename}"
+        image_url = f"/api/upload/image/{unique_filename}"
         
         return {
             "url": image_url,
