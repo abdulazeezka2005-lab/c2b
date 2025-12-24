@@ -10,7 +10,11 @@ const ProductCard = ({ product, onAddToCart, onWhatsAppOrder }) => {
   const getImageUrl = (imageUrl) => {
     if (!imageUrl) return 'https://via.placeholder.com/400';
     if (imageUrl.startsWith('http')) return imageUrl;
-    return `${BACKEND_URL}${imageUrl}`;
+    // Handle both /uploads/ and /api/uploads/ paths
+    if (imageUrl.startsWith('/api/uploads/') || imageUrl.startsWith('/uploads/')) {
+      return `${BACKEND_URL}${imageUrl}`;
+    }
+    return imageUrl;
   };
 
   return (
@@ -21,6 +25,7 @@ const ProductCard = ({ product, onAddToCart, onWhatsAppOrder }) => {
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           onError={(e) => {
+            console.error('Image load error for:', product.name, product.image);
             e.target.src = 'https://via.placeholder.com/400?text=Product+Image';
           }}
         />
