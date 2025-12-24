@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
 import InstagramFeed from '../components/InstagramFeed';
-import { products, instagramPosts, categories } from '../mock';
+import { categories } from '../mock';
 import { Button } from '../components/ui/button';
 import { useToast } from '../hooks/use-toast';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Home = ({ cart, setCart }) => {
   const [searchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [products, setProducts] = useState([]);
+  const [instagramPosts, setInstagramPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { toast } = useToast();
 
+  // Fetch products when category changes
   useEffect(() => {
     const category = searchParams.get('category');
     if (category) {
@@ -19,15 +28,42 @@ const Home = ({ cart, setCart }) => {
     }
   }, [searchParams]);
 
-  const filteredProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(p => p.category === selectedCategory);
+  useEffect(() => {
+    fetchProducts();
+    fetchInstagramPosts();
+  }, [selectedCategory]);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const url = selectedCategory === 'all' 
+        ? `${API}/products` 
+        : `${API}/products?category=${selectedCategory}`;
+      const response = await axios.get(url);
+      setProducts(response.data.products);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      setError('Failed to load products');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchInstagramPosts = async () => {
+    try {
+      const response = await axios.get(`${API}/instagram-posts`);
+      setInstagramPosts(response.data.posts);
+    } catch (err) {
+      console.error('Error fetching Instagram posts:', err);
+    }
+  };
 
   const handleAddToCart = (product) => {
-    const existingItem = cart.find(item => item.id === product.id);
+    const existingItem = cart.find(item => item._id === product._id);
     if (existingItem) {
       setCart(cart.map(item =>
-        item.id === product.id
+        item._id === product._id
           ? { ...item, quantity: item.quantity + 1 }
           : item
       ));
@@ -83,18 +119,32 @@ Please share more details.`;
           <h2 className="text-2xl font-bold text-gray-900">
             {categories.find(c => c.id === selectedCategory)?.name || 'All Products'}
           </h2>
-          <p className="text-gray-600">{filteredProducts.length} products available</p>
+          {loading ? (
+            <p className="text-gray-600">Loading products...</p>
+          ) : error ? (
+            <p className="text-red-600">{error}</p>
+          ) : (
+            <p className="text-gray-600">{products.length} products available</p>
+          )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredProducts.map(product => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={handleAddToCart}
-              onWhatsAppOrder={handleWhatsAppOrder}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="bg-gray-200 animate-pulse h-96 rounded-lg"></div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map(product => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                onAddToCart={handleAddToCart}
+                onWhatsAppOrder={handleWhatsAppOrder}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Instagram Feed */}
