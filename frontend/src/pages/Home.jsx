@@ -116,9 +116,9 @@ Please share more details.`;
       </div>
 
       {/* Products Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white">
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
             {categories.find(c => c.id === selectedCategory)?.name || 'All Products'}
           </h2>
           {loading ? (
@@ -126,7 +126,7 @@ Please share more details.`;
           ) : error ? (
             <p className="text-red-600">{error}</p>
           ) : (
-            <p className="text-gray-600">{products.length} products available</p>
+            <p className="text-gray-600 text-lg">{products.length} products available</p>
           )}
         </div>
         {loading ? (
