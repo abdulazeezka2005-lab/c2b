@@ -1,32 +1,69 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { Trash2, Plus, Minus, ShoppingBag, MessageCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
+import { useToast } from '../hooks/use-toast';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Cart = ({ cart, setCart }) => {
+  const { toast } = useToast();
+
   const updateQuantity = (productId, change) => {
     setCart(cart.map(item =>
-      item.id === productId
+      item._id === productId
         ? { ...item, quantity: Math.max(1, item.quantity + change) }
         : item
     ));
   };
 
   const removeItem = (productId) => {
-    setCart(cart.filter(item => item.id !== productId));
+    setCart(cart.filter(item => item._id !== productId));
   };
 
   const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  const handleWhatsAppCheckout = () => {
-    const orderDetails = cart.map(item =>
-      `*${item.name}*\nQty: ${item.quantity}\nPrice: ₹${item.price} x ${item.quantity} = ₹${item.price * item.quantity}`
-    ).join('\n\n');
+  const handleWhatsAppCheckout = async () => {
+    try {
+      // Save order to backend
+      const orderData = {
+        items: cart.map(item => ({
+          productId: item._id,
+          productName: item.name,
+          price: item.price,
+          quantity: item.quantity
+        })),
+        customerPhone: "1234567890" // You can add a form to collect this
+      };
 
-    const message = `Hi! I want to place an order:\n\n${orderDetails}\n\n*Total: ₹${totalAmount}*\n\nPlease confirm availability and delivery details.`;
-    const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+      const response = await axios.post(`${API}/orders`, orderData);
+      
+      if (response.data.order) {
+        toast({
+          title: "Order saved!",
+          description: "Your order has been recorded. Proceed to WhatsApp.",
+        });
+
+        // Prepare WhatsApp message
+        const orderDetails = cart.map(item =>
+          `*${item.name}*\nQty: ${item.quantity}\nPrice: ₹${item.price} x ${item.quantity} = ₹${item.price * item.quantity}`
+        ).join('\n\n');
+
+        const message = `Hi! I want to place an order:\n\n${orderDetails}\n\n*Total: ₹${totalAmount}*\n\nOrder ID: ${response.data.order._id}\n\nPlease confirm availability and delivery details.`;
+        const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save order. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   if (cart.length === 0) {
