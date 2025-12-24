@@ -1,57 +1,93 @@
 import React from 'react';
 import { Button } from './ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MessageCircle, ShoppingBag } from 'lucide-react';
 
 const Hero = () => {
-  const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '1234567890';
+  const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '916380832058';
   
   const scrollToProducts = () => {
     document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const openWhatsApp = () => {
+    const message = "Hi! I'm interested in your products. Can you help me?";
+    const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
-    <div className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+    <div className="relative bg-white border-b-2 border-gray-200">
+      {/* Classic Hero Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Discover Your
-            <span className="block bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Perfect Style
-            </span>
+          {/* Main Heading */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+            Welcome to C2B
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Premium watches, gadgets, fashion, and accessories at unbeatable prices.
-            Shop directly through WhatsApp!
+          <p className="text-xl md:text-2xl text-gray-700 mb-3 font-semibold">
+            Click to Buy - Your Trusted Online Store
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+            Quality products at great prices. Shop watches, gadgets, fashion, home decor, beauty products & more!
+            <br />
+            <span className="font-semibold text-purple-600">Fast delivery • Genuine products • Easy returns</span>
+          </p>
+
+          {/* Large Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <Button
               size="lg"
               onClick={scrollToProducts}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg"
+              className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white px-10 py-7 text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
             >
+              <ShoppingBag className="mr-3 w-6 h-6" />
               Shop Now
-              <ArrowRight className="ml-2 w-5 h-5" />
+              <ArrowRight className="ml-3 w-6 h-6" />
             </Button>
-            <a
-              href={`https://wa.me/${whatsappPhone}?text=Hi, I'm interested in your products`}
-              target="_blank"
-              rel="noopener noreferrer"
+            
+            <Button
+              size="lg"
+              onClick={openWhatsApp}
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-10 py-7 text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              <Button
-                size="lg"
-                variant="outline"
-                className="px-8 py-6 text-lg border-2 border-purple-600 text-purple-600 hover:bg-purple-50"
-              >
-                Chat on WhatsApp
-              </Button>
-            </a>
+              <MessageCircle className="mr-3 w-6 h-6" />
+              Chat on WhatsApp
+            </Button>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <div className="text-4xl mb-2">✓</div>
+              <h3 className="font-bold text-lg text-gray-900 mb-1">100% Genuine</h3>
+              <p className="text-gray-600 text-sm">Authentic products guaranteed</p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <div className="text-4xl mb-2">🚚</div>
+              <h3 className="font-bold text-lg text-gray-900 mb-1">Fast Delivery</h3>
+              <p className="text-gray-600 text-sm">Quick shipping across India</p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <div className="text-4xl mb-2">💬</div>
+              <h3 className="font-bold text-lg text-gray-900 mb-1">24/7 Support</h3>
+              <p className="text-gray-600 text-sm">Always here to help via WhatsApp</p>
+            </div>
           </div>
         </div>
       </div>
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-      <div className="absolute top-40 right-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-      <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+
+      {/* Floating WhatsApp Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button
+          onClick={openWhatsApp}
+          className="bg-green-500 hover:bg-green-600 text-white rounded-full w-16 h-16 shadow-2xl hover:scale-110 transition-transform duration-200 flex items-center justify-center"
+          title="Chat on WhatsApp"
+        >
+          <MessageCircle className="w-8 h-8" />
+        </Button>
+      </div>
     </div>
   );
 };
