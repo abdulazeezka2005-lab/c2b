@@ -92,7 +92,7 @@ const Cart = ({ cart, setCart }) => {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {cart.map(item => (
-              <Card key={item.id}>
+              <Card key={item._id}>
                 <CardContent className="p-4">
                   <div className="flex gap-4">
                     <img
@@ -109,7 +109,7 @@ const Cart = ({ cart, setCart }) => {
                           <Button
                             size="icon"
                             variant="outline"
-                            onClick={() => updateQuantity(item.id, -1)}
+                            onClick={() => updateQuantity(item._id, -1)}
                             className="h-8 w-8"
                           >
                             <Minus className="w-4 h-4" />
@@ -118,7 +118,7 @@ const Cart = ({ cart, setCart }) => {
                           <Button
                             size="icon"
                             variant="outline"
-                            onClick={() => updateQuantity(item.id, 1)}
+                            onClick={() => updateQuantity(item._id, 1)}
                             className="h-8 w-8"
                           >
                             <Plus className="w-4 h-4" />
@@ -126,7 +126,7 @@ const Cart = ({ cart, setCart }) => {
                           <Button
                             size="icon"
                             variant="destructive"
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => removeItem(item._id)}
                             className="h-8 w-8"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -147,7 +147,7 @@ const Cart = ({ cart, setCart }) => {
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
                 <div className="space-y-3 mb-4">
                   {cart.map(item => (
-                    <div key={item.id} className="flex justify-between text-sm">
+                    <div key={item._id} className="flex justify-between text-sm">
                       <span className="text-gray-600">
                         {item.name} x {item.quantity}
                       </span>
