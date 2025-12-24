@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Trash2, Plus, Minus, ShoppingBag, MessageCircle } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, CreditCard } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { useToast } from '../hooks/use-toast';
@@ -11,6 +11,7 @@ const API = `${BACKEND_URL}/api`;
 
 const Cart = ({ cart, setCart }) => {
   const { toast } = useToast();
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   const updateQuantity = (productId, change) => {
     setCart(cart.map(item =>
