@@ -20,6 +20,13 @@ const Hero = () => {
       {/* Classic Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="text-center">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-6 shadow-2xl">
+              <ShoppingBag className="w-20 h-20 text-white" />
+            </div>
+          </div>
+          
           {/* Main Heading */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
             Welcome to C2B
