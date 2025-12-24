@@ -77,13 +77,14 @@ const Home = ({ cart, setCart }) => {
   };
 
   const handleWhatsAppOrder = (product) => {
+    const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '1234567890';
     const message = `Hi! I'm interested in:
 
 *${product.name}*
 Price: ₹${product.price}
 
 Please share more details.`;
-    const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
