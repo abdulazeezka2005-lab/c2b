@@ -49,6 +49,7 @@ async def create_product(product: ProductCreate):
 @router.put("/{product_id}", response_model=dict)
 async def update_product(product_id: str, product: ProductUpdate):
     try:
+        db = get_database()
         if not ObjectId.is_valid(product_id):
             raise HTTPException(status_code=400, detail="Invalid product ID")
         
