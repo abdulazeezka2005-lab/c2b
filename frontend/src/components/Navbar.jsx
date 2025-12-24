@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 
 const Navbar = ({ cartCount, categories }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const instagramUrl = process.env.REACT_APP_INSTAGRAM_URL || 'https://instagram.com';
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -33,7 +34,7 @@ const Navbar = ({ cartCount, categories }) => {
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
             <a
-              href="https://instagram.com"
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-700 hover:text-pink-600 transition-colors duration-200"
