@@ -18,37 +18,41 @@ const ProductCard = ({ product, onAddToCart, onWhatsAppOrder }) => {
   };
 
   return (
-    <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div className="relative overflow-hidden aspect-square">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 bg-white border-2 border-gray-100">
+      <div className="relative overflow-hidden aspect-square bg-gray-100">
         <img
           src={getImageUrl(product.image)}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover"
           onError={(e) => {
             console.error('Image load error for:', product.name, product.image);
             e.target.src = 'https://via.placeholder.com/400?text=Product+Image';
           }}
         />
         {product.inStock ? (
-          <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
-            In Stock
+          <span className="absolute top-3 right-3 bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded">
+            IN STOCK
           </span>
         ) : (
-          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs px-3 py-1 rounded-full">
-            Out of Stock
+          <span className="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded">
+            OUT OF STOCK
           </span>
         )}
       </div>
       <CardContent className="p-4">
-        <h3 className="font-semibold text-lg text-gray-900 mb-1">{product.name}</h3>
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-2xl font-bold text-purple-600">₹{product.price}</span>
+        <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2 min-h-[3.5rem]">{product.name}</h3>
+        <p className="text-sm text-gray-600 mb-3 line-clamp-2 min-h-[2.5rem]">{product.description}</p>
+        <div className="mb-4">
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-purple-600">₹{product.price}</span>
+            <span className="text-sm text-gray-500 line-through">₹{Math.round(product.price * 1.3)}</span>
+          </div>
+          <span className="text-xs text-green-600 font-semibold">Save {Math.round(((product.price * 1.3 - product.price) / (product.price * 1.3)) * 100)}%</span>
         </div>
-        <div className="flex gap-2">
+        <div className="space-y-2">
           <Button
             onClick={() => onAddToCart(product)}
-            className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-5"
             disabled={!product.inStock}
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
@@ -56,11 +60,11 @@ const ProductCard = ({ product, onAddToCart, onWhatsAppOrder }) => {
           </Button>
           <Button
             onClick={() => onWhatsAppOrder(product)}
-            variant="outline"
-            className="border-green-500 text-green-600 hover:bg-green-50"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-5"
             disabled={!product.inStock}
           >
-            <MessageCircle className="w-4 h-4" />
+            <MessageCircle className="w-4 h-4 mr-2" />
+            Buy on WhatsApp
           </Button>
         </div>
       </CardContent>
