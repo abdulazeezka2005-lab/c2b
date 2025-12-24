@@ -494,18 +494,39 @@ const AdminDashboard = () => {
             </div>
 
             <div>
-              <Label htmlFor="image">Image URL</Label>
-              <Input
-                id="image"
-                name="image"
-                value={formData.image}
-                onChange={handleInputChange}
-                placeholder="https://example.com/image.jpg"
-                required
-              />
-              {formData.image && (
-                <img src={formData.image} alt="Preview" className="mt-2 w-32 h-32 object-cover rounded" />
-              )}
+              <Label htmlFor="image">Product Image</Label>
+              <div className="mt-2 space-y-2">
+                <div 
+                  className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-500 transition-colors cursor-pointer"
+                  onPaste={handleImagePaste}
+                  onClick={() => document.getElementById('imageUpload').click()}
+                >
+                  {uploadingImage ? (
+                    <p className="text-gray-600">Uploading image...</p>
+                  ) : imagePreview ? (
+                    <div className="space-y-2">
+                      <img src={imagePreview} alt="Preview" className="mx-auto w-48 h-48 object-cover rounded" />
+                      <p className="text-sm text-gray-600">Click to change or paste another image</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="text-4xl">📷</div>
+                      <p className="text-gray-600">Click to upload or paste image here</p>
+                      <p className="text-sm text-gray-500">Drag & drop, click to browse, or Ctrl+V to paste</p>
+                    </div>
+                  )}
+                  <input
+                    id="imageUpload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </div>
+                {formData.image && (
+                  <p className="text-xs text-gray-500 break-all">Image URL: {formData.image}</p>
+                )}
+              </div>
             </div>
 
             <div>
