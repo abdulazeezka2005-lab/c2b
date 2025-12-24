@@ -3,6 +3,8 @@ import { Instagram, Heart, MessageCircle } from 'lucide-react';
 import { Button } from './ui/button';
 
 const InstagramFeed = ({ posts }) => {
+  const instagramUrl = process.env.REACT_APP_INSTAGRAM_URL || 'https://instagram.com';
+  
   return (
     <div className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,7 +15,7 @@ const InstagramFeed = ({ posts }) => {
           </div>
           <p className="text-gray-600 mb-6">Stay updated with our latest products and offers</p>
           <a
-            href="https://instagram.com"
+            href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
