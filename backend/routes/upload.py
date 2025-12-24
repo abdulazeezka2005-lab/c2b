@@ -30,8 +30,8 @@ async def upload_image(file: UploadFile = File(...)):
         with open(file_path, 'wb') as f:
             f.write(contents)
         
-        # Return relative URL
-        image_url = f"/uploads/{unique_filename}"
+        # Return relative URL with /api prefix for proper routing
+        image_url = f"/api/uploads/{unique_filename}"
         
         return {
             "url": image_url,
@@ -64,8 +64,8 @@ async def upload_image_base64(data: dict):
         with open(file_path, 'wb') as f:
             f.write(image_data)
         
-        # Return relative URL
-        image_url = f"/uploads/{unique_filename}"
+        # Return relative URL with /api prefix
+        image_url = f"/api/uploads/{unique_filename}"
         
         return {
             "url": image_url,
