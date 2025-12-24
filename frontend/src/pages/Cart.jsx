@@ -28,6 +28,7 @@ const Cart = ({ cart, setCart }) => {
 
   const handleWhatsAppCheckout = async () => {
     try {
+      const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '1234567890';
       // Save order to backend
       const orderData = {
         items: cart.map(item => ({
@@ -36,7 +37,7 @@ const Cart = ({ cart, setCart }) => {
           price: item.price,
           quantity: item.quantity
         })),
-        customerPhone: "1234567890" // You can add a form to collect this
+        customerPhone: whatsappPhone
       };
 
       const response = await axios.post(`${API}/orders`, orderData);
@@ -53,7 +54,7 @@ const Cart = ({ cart, setCart }) => {
         ).join('\n\n');
 
         const message = `Hi! I want to place an order:\n\n${orderDetails}\n\n*Total: ₹${totalAmount}*\n\nOrder ID: ${response.data.order._id}\n\nPlease confirm availability and delivery details.`;
-        const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
       }
     } catch (error) {
