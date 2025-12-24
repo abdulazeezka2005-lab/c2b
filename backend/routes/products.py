@@ -16,6 +16,7 @@ def get_database():
 @router.get("", response_model=dict)
 async def get_products(category: Optional[str] = Query(None)):
     try:
+        db = get_database()
         query = {}
         if category and category != "all":
             query["category"] = category
