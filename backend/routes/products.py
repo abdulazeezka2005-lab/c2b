@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 from typing import Optional, List
 from models.product import Product, ProductCreate, ProductUpdate
 from bson import ObjectId
@@ -8,10 +8,10 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 router = APIRouter(prefix="/products", tags=["products"])
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+def get_database():
+    mongo_url = os.environ['MONGO_URL']
+    client = AsyncIOMotorClient(mongo_url)
+    return client[os.environ['DB_NAME']]
 
 @router.get("", response_model=dict)
 async def get_products(category: Optional[str] = Query(None)):
