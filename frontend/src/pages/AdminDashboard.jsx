@@ -83,6 +83,63 @@ const AdminDashboard = () => {
     }));
   };
 
+  const handleImagePaste = async (e) => {
+    const items = e.clipboardData.items;
+    for (let item of items) {
+      if (item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile();
+        handleImageFile(file);
+        e.preventDefault();
+      }
+    }
+  };
+
+  const handleImageFile = async (file) => {
+    if (!file) return;
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({ title: "Error", description: "Please select an image file", variant: "destructive" });
+      return;
+    }
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+    
+    // Upload image
+    setUploadingImage(true);
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', file);
+      
+      const response = await axios.post(`${API}/upload/image`, formDataUpload, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          ...getAuthHeader()
+        }
+      });
+      
+      const imageUrl = `${BACKEND_URL}${response.data.url}`;
+      setFormData(prev => ({ ...prev, image: imageUrl }));
+      toast({ title: "Success", description: "Image uploaded successfully" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to upload image", variant: "destructive" });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      handleImageFile(file);
+    }
+  };
+
   const handleCategoryChange = (value) => {
     setFormData(prev => ({ ...prev, category: value }));
   };
