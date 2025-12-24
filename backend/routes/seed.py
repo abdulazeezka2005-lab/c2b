@@ -394,3 +394,183 @@ async def seed_database():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/add-new-categories", response_model=dict)
+async def add_new_categories():
+    """Add products from new categories"""
+    try:
+        db = get_database()
+        
+        # Check if new category products already exist
+        electronics_count = await db.products.count_documents({"category": "electronics"})
+        if electronics_count > 0:
+            return {"message": "New categories already added", "skipped": True}
+        
+        new_products = [
+            # Electronics
+            {
+                "name": "Wireless Keyboard",
+                "category": "electronics",
+                "price": 1599,
+                "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&h=800&fit=crop",
+                "description": "Mechanical wireless keyboard with RGB lighting",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Gaming Mouse",
+                "category": "electronics",
+                "price": 999,
+                "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&h=800&fit=crop",
+                "description": "High precision gaming mouse with customizable buttons",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "USB-C Hub",
+                "category": "electronics",
+                "price": 1299,
+                "image": "https://images.unsplash.com/photo-1625948515291-69613efd103f?w=800&h=800&fit=crop",
+                "description": "7-in-1 USB-C hub with HDMI and card reader",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            # Home Decor
+            {
+                "name": "Modern Table Lamp",
+                "category": "homedecor",
+                "price": 2499,
+                "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&h=800&fit=crop",
+                "description": "Minimalist LED table lamp with touch control",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Wall Art Canvas",
+                "category": "homedecor",
+                "price": 1999,
+                "image": "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=800&h=800&fit=crop",
+                "description": "Abstract wall art canvas print",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Decorative Cushions",
+                "category": "homedecor",
+                "price": 799,
+                "image": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&h=800&fit=crop",
+                "description": "Set of 2 premium decorative cushions",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            # Beauty Products
+            {
+                "name": "Skincare Set",
+                "category": "beauty",
+                "price": 2999,
+                "image": "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=800&h=800&fit=crop",
+                "description": "Complete skincare routine set",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Hair Dryer Pro",
+                "category": "beauty",
+                "price": 3499,
+                "image": "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=800&h=800&fit=crop",
+                "description": "Professional ionic hair dryer",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Makeup Brush Set",
+                "category": "beauty",
+                "price": 1499,
+                "image": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800&h=800&fit=crop",
+                "description": "Professional 12-piece makeup brush set",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            # Jewelry
+            {
+                "name": "Silver Bracelet",
+                "category": "jewelry",
+                "price": 1999,
+                "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&h=800&fit=crop",
+                "description": "Sterling silver chain bracelet",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Pearl Necklace",
+                "category": "jewelry",
+                "price": 3499,
+                "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop",
+                "description": "Classic pearl necklace",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Gold Earrings",
+                "category": "jewelry",
+                "price": 2499,
+                "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&h=800&fit=crop",
+                "description": "18k gold plated drop earrings",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            # Sports Equipment
+            {
+                "name": "Yoga Mat Premium",
+                "category": "sports",
+                "price": 1299,
+                "image": "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=800&h=800&fit=crop",
+                "description": "Non-slip premium yoga mat",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Resistance Bands",
+                "category": "sports",
+                "price": 699,
+                "image": "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=800&h=800&fit=crop",
+                "description": "Set of 5 resistance bands for workout",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            },
+            {
+                "name": "Dumbbell Set",
+                "category": "sports",
+                "price": 2999,
+                "image": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=800&fit=crop",
+                "description": "Adjustable dumbbell set 5-25kg",
+                "inStock": True,
+                "createdAt": datetime.utcnow(),
+                "updatedAt": datetime.utcnow()
+            }
+        ]
+        
+        await db.products.insert_many(new_products)
+        
+        return {
+            "message": "New categories added successfully",
+            "productsCreated": len(new_products),
+            "categories": ["electronics", "homedecor", "beauty", "jewelry", "sports"]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
