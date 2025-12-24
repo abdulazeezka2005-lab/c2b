@@ -93,18 +93,19 @@ Please share more details.`;
       <Hero />
 
       {/* Category Filter */}
-      <div id="products" className="bg-white py-8 sticky top-16 z-40 shadow-sm">
+      <div id="products" className="bg-gray-50 py-6 border-y-2 border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-hide">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">Shop by Category</h2>
+          <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-hide justify-center">
             {categories.map(category => (
               <Button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
                 variant={selectedCategory === category.id ? 'default' : 'outline'}
-                className={`whitespace-nowrap transition-all duration-200 ${
+                className={`whitespace-nowrap transition-all duration-200 font-semibold ${
                   selectedCategory === category.id
-                    ? 'bg-purple-600 text-white hover:bg-purple-700'
-                    : 'hover:border-purple-600 hover:text-purple-600'
+                    ? 'bg-purple-600 text-white hover:bg-purple-700 shadow-md'
+                    : 'bg-white hover:bg-purple-50 hover:border-purple-600 hover:text-purple-600 border-2'
                 }`}
               >
                 {category.name}
