@@ -1,6 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
@@ -14,6 +15,7 @@ from routes.seed import router as seed_router
 from routes.admin import router as admin_router
 from routes.reviews import router as reviews_router
 from routes.payments import router as payments_router
+from routes.upload import router as upload_router
 
 
 ROOT_DIR = Path(__file__).parent
