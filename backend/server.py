@@ -11,6 +11,9 @@ from routes.products import router as products_router
 from routes.orders import router as orders_router
 from routes.instagram_posts import router as instagram_router
 from routes.seed import router as seed_router
+from routes.admin import router as admin_router
+from routes.reviews import router as reviews_router
+from routes.payments import router as payments_router
 
 
 ROOT_DIR = Path(__file__).parent
