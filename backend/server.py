@@ -47,11 +47,6 @@ api_router.include_router(reviews_router)
 api_router.include_router(payments_router)
 api_router.include_router(upload_router)
 
-# Serve uploaded files under /api/uploads
-uploads_dir = Path("/app/backend/uploads")
-uploads_dir.mkdir(exist_ok=True)
-api_router.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
-
 # Include the router in the main app
 app.include_router(api_router)
 
