@@ -76,7 +76,7 @@ async def get_image(filename: str):
             f.write(image_data)
         
         # Return relative URL with /api prefix
-        image_url = f"/api/uploads/{unique_filename}"
+        image_url = f"/api/upload/image/{unique_filename}"
         
         return {
             "url": image_url,
