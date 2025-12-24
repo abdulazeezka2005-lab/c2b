@@ -15,10 +15,10 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-              StyleHub
+              C2B
             </h3>
             <p className="text-gray-400 text-sm">
-              Your one-stop shop for premium watches, gadgets, fashion, and accessories.
+              Click to Buy - Your one-stop shop for premium watches, gadgets, fashion, and accessories.
             </p>
           </div>
 
