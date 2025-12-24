@@ -6,14 +6,15 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+def get_database():
+    mongo_url = os.environ['MONGO_URL']
+    client = AsyncIOMotorClient(mongo_url)
+    return client[os.environ['DB_NAME']]
 
 @router.post("", response_model=dict)
 async def create_order(order: OrderCreate):
     try:
+        db = get_database()
         # Calculate total amount
         total_amount = sum(item.price * item.quantity for item in order.items)
         
