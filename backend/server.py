@@ -40,6 +40,9 @@ api_router.include_router(products_router)
 api_router.include_router(orders_router)
 api_router.include_router(instagram_router)
 api_router.include_router(seed_router)
+api_router.include_router(admin_router)
+api_router.include_router(reviews_router)
+api_router.include_router(payments_router)
 
 # Include the router in the main app
 app.include_router(api_router)
