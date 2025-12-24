@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 
 const InstagramFeed = ({ posts }) => {
   const instagramUrl = process.env.REACT_APP_INSTAGRAM_URL || 'https://instagram.com';
+  const instagramHandle = process.env.REACT_APP_INSTAGRAM_HANDLE || '@c2b_gadgets';
   
   return (
     <div className="py-16 bg-gray-50">
@@ -21,7 +22,7 @@ const InstagramFeed = ({ posts }) => {
           >
             <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
               <Instagram className="w-5 h-5 mr-2" />
-              Follow @stylehub
+              Follow {instagramHandle}
             </Button>
           </a>
         </div>
