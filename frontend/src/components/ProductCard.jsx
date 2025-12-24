@@ -4,13 +4,25 @@ import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 
 const ProductCard = ({ product, onAddToCart, onWhatsAppOrder }) => {
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  
+  // Handle image URL - add backend URL if it's a relative path
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl) return 'https://via.placeholder.com/400';
+    if (imageUrl.startsWith('http')) return imageUrl;
+    return `${BACKEND_URL}${imageUrl}`;
+  };
+
   return (
     <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       <div className="relative overflow-hidden aspect-square">
         <img
-          src={product.image}
+          src={getImageUrl(product.image)}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          onError={(e) => {
+            e.target.src = 'https://via.placeholder.com/400?text=Product+Image';
+          }}
         />
         {product.inStock ? (
           <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
