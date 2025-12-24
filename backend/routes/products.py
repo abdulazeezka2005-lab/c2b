@@ -76,6 +76,7 @@ async def update_product(product_id: str, product: ProductUpdate):
 @router.delete("/{product_id}", response_model=dict)
 async def delete_product(product_id: str):
     try:
+        db = get_database()
         if not ObjectId.is_valid(product_id):
             raise HTTPException(status_code=400, detail="Invalid product ID")
         
