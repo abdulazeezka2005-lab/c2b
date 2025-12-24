@@ -34,6 +34,7 @@ async def get_products(category: Optional[str] = Query(None)):
 @router.post("", response_model=dict)
 async def create_product(product: ProductCreate):
     try:
+        db = get_database()
         product_dict = product.dict()
         product_dict["createdAt"] = datetime.utcnow()
         product_dict["updatedAt"] = datetime.utcnow()
