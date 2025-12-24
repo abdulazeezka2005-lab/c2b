@@ -34,11 +34,16 @@ const Navbar = ({ cartCount, categories }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-purple-600">
-              C2B
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg p-2 shadow-md">
+              <ShoppingCart className="w-8 h-8 text-white" />
             </div>
-            <span className="text-sm text-gray-600 hidden sm:block font-semibold">Click to Buy</span>
+            <div>
+              <div className="text-2xl font-bold text-purple-600">
+                C2B
+              </div>
+              <span className="text-xs text-gray-600 font-semibold">Click to Buy</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
