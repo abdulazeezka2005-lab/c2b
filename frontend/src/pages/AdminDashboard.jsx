@@ -188,6 +188,7 @@ const AdminDashboard = () => {
       description: product.description,
       inStock: product.inStock
     });
+    setImagePreview(product.image);
     setShowProductModal(true);
   };
 
