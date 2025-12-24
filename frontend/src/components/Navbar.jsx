@@ -14,8 +14,9 @@ const Navbar = ({ cartCount, categories }) => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              StyleHub
+              C2B
             </div>
+            <span className="text-sm text-gray-600 hidden sm:block">Click to Buy</span>
           </Link>
 
           {/* Desktop Navigation */}
