@@ -28,6 +28,7 @@ async def get_instagram_posts():
 @router.post("", response_model=dict)
 async def create_instagram_post(post: InstagramPostCreate):
     try:
+        db = get_database()
         post_dict = post.dict()
         post_dict["createdAt"] = datetime.utcnow()
         
