@@ -6,14 +6,15 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 router = APIRouter(prefix="/instagram-posts", tags=["instagram"])
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+def get_database():
+    mongo_url = os.environ['MONGO_URL']
+    client = AsyncIOMotorClient(mongo_url)
+    return client[os.environ['DB_NAME']]
 
 @router.get("", response_model=dict)
 async def get_instagram_posts():
     try:
+        db = get_database()
         posts = await db.instagram_posts.find().to_list(1000)
         
         # Convert ObjectId to string
