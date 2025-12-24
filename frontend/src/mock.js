@@ -197,5 +197,10 @@ export const categories = [
   { id: 'gadgets', name: 'Gadgets', icon: '🎧' },
   { id: 'clothes', name: 'Clothes', icon: '👕' },
   { id: 'shoes', name: 'Shoes', icon: '👟' },
-  { id: 'accessories', name: 'Accessories', icon: '👜' }
+  { id: 'accessories', name: 'Accessories', icon: '👜' },
+  { id: 'electronics', name: 'Electronics', icon: '💻' },
+  { id: 'homedecor', name: 'Home Decor', icon: '🏠' },
+  { id: 'beauty', name: 'Beauty', icon: '💄' },
+  { id: 'jewelry', name: 'Jewelry', icon: '💎' },
+  { id: 'sports', name: 'Sports', icon: '⚽' }
 ];
