@@ -36,6 +36,9 @@ const AdminDashboard = () => {
     description: '',
     inStock: true
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
     if (!admin) {
