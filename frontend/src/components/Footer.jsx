@@ -3,6 +3,11 @@ import { Instagram, MessageCircle, Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  const instagramUrl = process.env.REACT_APP_INSTAGRAM_URL || 'https://instagram.com';
+  const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '1234567890';
+  const contactPhone = process.env.REACT_APP_CONTACT_PHONE || '+91 1234567890';
+  const contactEmail = process.env.REACT_APP_CONTACT_EMAIL || 'info@stylehub.com';
+  
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -34,11 +39,11 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-gray-400">
               <li className="flex items-center">
                 <Phone className="w-4 h-4 mr-2" />
-                <span>+91 1234567890</span>
+                <span>{contactPhone}</span>
               </li>
               <li className="flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
-                <span>info@stylehub.com</span>
+                <span>{contactEmail}</span>
               </li>
             </ul>
           </div>
@@ -48,7 +53,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-4">
               <a
-                href="https://instagram.com"
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200"
@@ -56,7 +61,7 @@ const Footer = () => {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://wa.me/1234567890"
+                href={`https://wa.me/${whatsappPhone}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-green-500 p-3 rounded-full hover:bg-green-600 transition-all duration-200"
