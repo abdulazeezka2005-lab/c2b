@@ -34,7 +34,7 @@ const Hero = () => {
           </p>
 
           {/* Large Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button
               size="lg"
               onClick={scrollToProducts}
@@ -53,24 +53,6 @@ const Hero = () => {
               <MessageCircle className="mr-3 w-6 h-6" />
               Chat on WhatsApp
             </Button>
-          </div>
-
-          {/* Trust Indicators - Minimized */}
-          <div className="flex flex-wrap justify-center gap-6 max-w-3xl mx-auto mt-8">
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span className="text-green-600 text-xl">✓</span>
-              <span className="font-semibold">100% Genuine</span>
-            </div>
-            
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span className="text-green-600 text-xl">✓</span>
-              <span className="font-semibold">Fast Delivery</span>
-            </div>
-            
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span className="text-green-600 text-xl">✓</span>
-              <span className="font-semibold">24/7 Support</span>
-            </div>
           </div>
         </div>
       </div>
