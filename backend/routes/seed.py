@@ -5,14 +5,15 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 router = APIRouter(prefix="/seed", tags=["seed"])
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+def get_database():
+    mongo_url = os.environ['MONGO_URL']
+    client = AsyncIOMotorClient(mongo_url)
+    return client[os.environ['DB_NAME']]
 
 @router.post("", response_model=dict)
 async def seed_database():
     try:
+        db = get_database()
         # Check if already seeded
         existing_products = await db.products.count_documents({})
         if existing_products > 0:
