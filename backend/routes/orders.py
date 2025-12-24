@@ -33,6 +33,7 @@ async def create_order(order: OrderCreate):
 @router.get("", response_model=dict)
 async def get_orders():
     try:
+        db = get_database()
         orders = await db.orders.find().sort("orderDate", -1).to_list(1000)
         
         # Convert ObjectId to string
