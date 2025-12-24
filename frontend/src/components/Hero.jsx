@@ -3,6 +3,8 @@ import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
+  const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '1234567890';
+  
   const scrollToProducts = () => {
     document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -31,7 +33,7 @@ const Hero = () => {
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <a
-              href="https://wa.me/1234567890?text=Hi, I'm interested in your products"
+              href={`https://wa.me/${whatsappPhone}?text=Hi, I'm interested in your products`}
               target="_blank"
               rel="noopener noreferrer"
             >
