@@ -247,6 +247,14 @@ const Cart = ({ cart, setCart }) => {
                   </div>
                 </div>
                 <Button
+                  onClick={handleOnlinePayment}
+                  disabled={paymentLoading}
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white py-6 text-lg mb-3"
+                >
+                  <CreditCard className="w-5 h-5 mr-2" />
+                  {paymentLoading ? 'Processing...' : 'Pay Online'}
+                </Button>
+                <Button
                   onClick={handleWhatsAppCheckout}
                   className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg"
                 >
