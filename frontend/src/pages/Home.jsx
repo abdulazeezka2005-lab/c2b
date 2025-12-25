@@ -147,6 +147,7 @@ Please share more details.`;
                 product={product}
                 onAddToCart={handleAddToCart}
                 onWhatsAppOrder={handleWhatsAppOrder}
+                onClick={handleProductClick}
               />
             ))}
           </div>
