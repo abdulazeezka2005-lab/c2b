@@ -226,7 +226,53 @@ backend:
         comment: "Database seeding works correctly, creates 16 products and 6 Instagram posts"
 
 frontend:
-  # Frontend testing not performed as per instructions
+  - task: "Buy Now Feature - Product Detail Modal"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/ProductDetailModal.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "ProductDetailModal implemented with Razorpay payment, quantity selector, 0% fee highlight, and WhatsApp order option. Need to test the modal opens on product click and payment flow works."
+
+  - task: "Cart Page - Razorpay Only Payment"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Cart.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Cart cleaned up - removed manual payment options. Now only has Razorpay payment with 0% fee highlight and WhatsApp order option."
+
+  - task: "Product Card - View & Buy Now Button"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/ProductCard.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "ProductCard updated with 'View & Buy Now' button that triggers product detail modal. Fixed syntax errors from corrupted file."
+
+  - task: "Home Page - Product Modal Integration"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/Home.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Home page updated with ProductDetailModal integration. Fixed props passing to ProductCard (onProductClick) and ProductDetailModal (isOpen)."
 
 metadata:
   created_by: "testing_agent"
@@ -236,11 +282,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All backend API endpoints tested successfully"
+    - "Buy Now Feature - Product Detail Modal"
+    - "Cart Page - Razorpay Only Payment"
+    - "Product Card - View & Buy Now Button"
+    - "Home Page - Product Modal Integration"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "testing"
     message: "Comprehensive backend API testing completed successfully. All 17 test cases passed with 100% success rate. All endpoints are working correctly including CRUD operations, error handling, and data validation. Backend service is running properly and handling requests as expected."
+  - agent: "main"
+    message: "Implemented P0 tasks: 1) Fixed ProductCard.jsx syntax errors and rewrote file. 2) Fixed Home.jsx props for ProductDetailModal (added isOpen prop) and ProductCard (fixed onClick to onProductClick). 3) Cleaned up Cart.jsx - removed unused manual payment functions, states, and imports. The Buy Now feature, 0% RuPay/UPI fee highlight, and Razorpay-only payment are ready for testing. Please test: 1) Click on any product card opens the detail modal. 2) Modal shows product details, quantity selector, and payment options. 3) 'Buy Now - Pay Securely' button initiates Razorpay. 4) Cart page only shows Razorpay payment option with 0% fee banner."
