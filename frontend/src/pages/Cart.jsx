@@ -325,12 +325,23 @@ const Cart = ({ cart, setCart }) => {
                 <div className="space-y-3 mb-4">
                   <p className="text-sm font-semibold text-gray-700">Choose Payment Method:</p>
                   
+                  {process.env.REACT_APP_ENABLE_RAZORPAY === 'true' && (
+                    <Button
+                      onClick={handleRazorpayPayment}
+                      disabled={paymentLoading}
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white py-5 text-base justify-start"
+                    >
+                      <CreditCard className="w-5 h-5 mr-3" />
+                      {paymentLoading ? 'Processing...' : 'Pay with Card/UPI/Wallet (Razorpay)'}
+                    </Button>
+                  )}
+                  
                   <Button
                     onClick={() => handlePaymentMethodSelect('UPI')}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 text-base justify-start"
                   >
                     <Smartphone className="w-5 h-5 mr-3" />
-                    Pay via UPI (Google Pay/PhonePe/Paytm)
+                    Direct UPI Payment (Manual)
                   </Button>
                   
                   <Button
