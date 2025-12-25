@@ -323,44 +323,27 @@ const Cart = ({ cart, setCart }) => {
                 
                 {/* Payment Options */}
                 <div className="space-y-3 mb-4">
-                  <p className="text-sm font-semibold text-gray-700">Choose Payment Method:</p>
-                  
-                  {process.env.REACT_APP_ENABLE_RAZORPAY === 'true' && (
-                    <Button
-                      onClick={handleRazorpayPayment}
-                      disabled={paymentLoading}
-                      className="w-full bg-purple-600 hover:bg-purple-700 text-white py-5 text-base justify-start"
-                    >
-                      <CreditCard className="w-5 h-5 mr-3" />
-                      {paymentLoading ? 'Processing...' : 'Pay with Card/UPI/Wallet (Razorpay)'}
-                    </Button>
-                  )}
+                  <div className="bg-green-50 p-3 rounded-lg border border-green-200 mb-3">
+                    <p className="text-sm text-green-800 font-bold">
+                      🎉 0% Payment Fee on RuPay & UPI
+                    </p>
+                    <p className="text-xs text-green-700 mt-1">
+                      Pay with UPI or RuPay cards - Absolutely FREE!
+                    </p>
+                  </div>
                   
                   <Button
-                    onClick={() => handlePaymentMethodSelect('UPI')}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 text-base justify-start"
+                    onClick={handleRazorpayPayment}
+                    disabled={paymentLoading}
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white py-6 text-lg font-semibold"
                   >
-                    <Smartphone className="w-5 h-5 mr-3" />
-                    Direct UPI Payment (Manual)
+                    <CreditCard className="w-5 h-5 mr-3" />
+                    {paymentLoading ? 'Processing...' : 'Pay Securely (0% Fee)'}
                   </Button>
                   
-                  <Button
-                    onClick={() => handlePaymentMethodSelect('Bank Transfer')}
-                    variant="outline"
-                    className="w-full py-5 text-base justify-start border-2 hover:bg-gray-50"
-                  >
-                    <Building2 className="w-5 h-5 mr-3" />
-                    Bank Transfer / NEFT / IMPS
-                  </Button>
-                  
-                  <Button
-                    onClick={() => handlePaymentMethodSelect('Cash on Delivery')}
-                    variant="outline"
-                    className="w-full py-5 text-base justify-start border-2 hover:bg-gray-50"
-                  >
-                    <Banknote className="w-5 h-5 mr-3" />
-                    Cash on Delivery (COD)
-                  </Button>
+                  <p className="text-xs text-center text-gray-500">
+                    Secure payment powered by Razorpay
+                  </p>
                 </div>
 
                 <div className="border-t pt-3">
