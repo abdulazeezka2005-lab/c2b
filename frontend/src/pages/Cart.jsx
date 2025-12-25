@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, CreditCard } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, Smartphone, Building2, Banknote, Copy } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { useToast } from '../hooks/use-toast';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -11,7 +12,8 @@ const API = `${BACKEND_URL}/api`;
 
 const Cart = ({ cart, setCart }) => {
   const { toast } = useToast();
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
   const updateQuantity = (productId, change) => {
     setCart(cart.map(item =>
