@@ -223,21 +223,48 @@ const Cart = ({ cart, setCart }) => {
                     <span className="text-2xl font-bold text-purple-600">₹{totalAmount}</span>
                   </div>
                 </div>
-                <Button
-                  onClick={handleOnlinePayment}
-                  disabled={paymentLoading}
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white py-6 text-lg mb-3"
-                >
-                  <CreditCard className="w-5 h-5 mr-2" />
-                  {paymentLoading ? 'Processing...' : 'Pay Online'}
-                </Button>
-                <Button
-                  onClick={handleWhatsAppCheckout}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg"
-                >
-                  <MessageCircle className="w-5 h-5 mr-2" />
-                  Order on WhatsApp
-                </Button>
+                
+                {/* Payment Options */}
+                <div className="space-y-3 mb-4">
+                  <p className="text-sm font-semibold text-gray-700">Choose Payment Method:</p>
+                  
+                  <Button
+                    onClick={() => handlePaymentMethodSelect('UPI')}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 text-base justify-start"
+                  >
+                    <Smartphone className="w-5 h-5 mr-3" />
+                    Pay via UPI (Google Pay/PhonePe/Paytm)
+                  </Button>
+                  
+                  <Button
+                    onClick={() => handlePaymentMethodSelect('Bank Transfer')}
+                    variant="outline"
+                    className="w-full py-5 text-base justify-start border-2 hover:bg-gray-50"
+                  >
+                    <Building2 className="w-5 h-5 mr-3" />
+                    Bank Transfer / NEFT / IMPS
+                  </Button>
+                  
+                  <Button
+                    onClick={() => handlePaymentMethodSelect('Cash on Delivery')}
+                    variant="outline"
+                    className="w-full py-5 text-base justify-start border-2 hover:bg-gray-50"
+                  >
+                    <Banknote className="w-5 h-5 mr-3" />
+                    Cash on Delivery (COD)
+                  </Button>
+                </div>
+
+                <div className="border-t pt-3">
+                  <Button
+                    onClick={handleWhatsAppCheckout}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-5 text-base"
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    Order via WhatsApp
+                  </Button>
+                </div>
+                
                 <Link to="/">
                   <Button variant="outline" className="w-full mt-3">
                     Continue Shopping
@@ -247,6 +274,115 @@ const Cart = ({ cart, setCart }) => {
             </Card>
           </div>
         </div>
+
+        {/* Payment Details Modal */}
+        <Dialog open={showPaymentModal} onOpenChange={setShowPaymentModal}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold">
+                {selectedPayment} Payment Details
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="space-y-4 mt-4">
+              {selectedPayment === 'UPI' && (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600">Pay ₹{totalAmount} to our UPI ID:</p>
+                  <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-bold text-blue-900">
+                        {process.env.REACT_APP_UPI_ID || '6380832058@paytm'}
+                      </span>
+                      <Button
+                        size="sm"
+                        onClick={() => copyToClipboard(process.env.REACT_APP_UPI_ID || '6380832058@paytm', 'UPI ID')}
+                      >
+                        <Copy className="w-4 h-4 mr-1" />
+                        Copy
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="bg-yellow-50 p-3 rounded border border-yellow-200">
+                    <p className="text-sm text-yellow-800">
+                      <strong>Steps:</strong>
+                      <br />1. Open your UPI app (GPay/PhonePe/Paytm)
+                      <br />2. Send ₹{totalAmount} to above UPI ID
+                      <br />3. Take screenshot of payment
+                      <br />4. Click "Confirm Payment" below
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {selectedPayment === 'Bank Transfer' && (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600">Transfer ₹{totalAmount} to:</p>
+                  <div className="bg-gray-50 p-4 rounded-lg border space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Bank Name:</span>
+                      <span className="font-semibold">{process.env.REACT_APP_BANK_NAME || 'State Bank of India'}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Account Number:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">{process.env.REACT_APP_ACCOUNT_NUMBER || '1234567890'}</span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => copyToClipboard(process.env.REACT_APP_ACCOUNT_NUMBER || '1234567890', 'Account Number')}
+                        >
+                          <Copy className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">IFSC Code:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">{process.env.REACT_APP_IFSC_CODE || 'SBIN0001234'}</span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => copyToClipboard(process.env.REACT_APP_IFSC_CODE || 'SBIN0001234', 'IFSC Code')}
+                        >
+                          <Copy className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Account Holder:</span>
+                      <span className="font-semibold">C2B Store</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {selectedPayment === 'Cash on Delivery' && (
+                <div className="space-y-3">
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <p className="text-green-800">
+                      <strong>Cash on Delivery Available!</strong>
+                    </p>
+                    <p className="text-sm text-green-700 mt-2">
+                      Pay ₹{totalAmount} in cash when you receive your order. No advance payment needed!
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded">
+                    <p className="text-sm text-gray-700">
+                      <strong>Note:</strong> COD orders will be confirmed via WhatsApp. Please keep ₹{totalAmount} ready at the time of delivery.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <Button
+                onClick={handleConfirmPayment}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-6 text-lg"
+              >
+                Confirm & Place Order
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
