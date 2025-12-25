@@ -147,7 +147,7 @@ Please share more details.`;
                 product={product}
                 onAddToCart={handleAddToCart}
                 onWhatsAppOrder={handleWhatsAppOrder}
-                onClick={handleProductClick}
+                onProductClick={handleProductClick}
               />
             ))}
           </div>
@@ -158,14 +158,12 @@ Please share more details.`;
       <InstagramFeed posts={instagramPosts} />
 
       {/* Product Detail Modal */}
-      {showProductModal && selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          onClose={() => setShowProductModal(false)}
-          onAddToCart={handleAddToCart}
-          onWhatsAppOrder={handleWhatsAppOrder}
-        />
-      )}
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={showProductModal}
+        onClose={() => setShowProductModal(false)}
+        onAddToCart={handleAddToCart}
+      />
     </div>
   );
 };
