@@ -12,8 +12,6 @@ const API = `${BACKEND_URL}/api`;
 
 const Cart = ({ cart, setCart }) => {
   const { toast } = useToast();
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
 
   const updateQuantity = (productId, change) => {
@@ -66,64 +64,6 @@ const Cart = ({ cart, setCart }) => {
       toast({
         title: "Error",
         description: "Failed to save order. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handlePaymentMethodSelect = (method) => {
-    setSelectedPayment(method);
-    setShowPaymentModal(true);
-  };
-
-  const copyToClipboard = (text, label) => {
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied!",
-      description: `${label} copied to clipboard`,
-    });
-  };
-
-  const handleConfirmPayment = async () => {
-    try {
-      // Save order to backend
-      const orderData = {
-        items: cart.map(item => ({
-          productId: item._id,
-          productName: item.name,
-          price: item.price,
-          quantity: item.quantity
-        })),
-        customerPhone: "6380832058"
-      };
-
-      const response = await axios.post(`${API}/orders`, orderData);
-      
-      if (response.data.order) {
-        toast({
-          title: "Order Placed!",
-          description: `Your order ID: ${response.data.order._id}. We'll confirm once payment is received.`,
-        });
-
-        // Send confirmation via WhatsApp
-        const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '916380832058';
-        const orderDetails = cart.map(item =>
-          `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`
-        ).join('\n');
-        
-        const message = `New Order Placed!\n\nOrder ID: ${response.data.order._id}\nPayment Method: ${selectedPayment}\n\n${orderDetails}\n\nTotal: ₹${totalAmount}\n\nWaiting for payment confirmation.`;
-        const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-
-        // Clear cart after order
-        setCart([]);
-        setShowPaymentModal(false);
-      }
-    } catch (error) {
-      console.error('Error creating order:', error);
-      toast({
-        title: "Error",
-        description: "Failed to place order. Please try again.",
         variant: "destructive"
       });
     }
