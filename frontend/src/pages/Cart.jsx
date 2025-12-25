@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, Smartphone, Building2, Banknote, Copy } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, Smartphone, Building2, Banknote, Copy, CreditCard } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
@@ -14,6 +14,7 @@ const Cart = ({ cart, setCart }) => {
   const { toast } = useToast();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   const updateQuantity = (productId, change) => {
     setCart(cart.map(item =>
