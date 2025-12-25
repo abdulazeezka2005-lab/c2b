@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
+import ProductDetailModal from '../components/ProductDetailModal';
 import InstagramFeed from '../components/InstagramFeed';
 import { categories } from '../mock';
 import { Button } from '../components/ui/button';
@@ -18,6 +19,8 @@ const Home = ({ cart, setCart }) => {
   const [instagramPosts, setInstagramPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showProductModal, setShowProductModal] = useState(false);
   const { toast } = useToast();
 
   // Fetch products when category changes
