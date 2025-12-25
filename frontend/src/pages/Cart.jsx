@@ -129,6 +129,102 @@ const Cart = ({ cart, setCart }) => {
     }
   };
 
+  const handleRazorpayPayment = async () => {
+    setPaymentLoading(true);
+    try {
+      // Create order in database first
+      const orderData = {
+        items: cart.map(item => ({
+          productId: item._id,
+          productName: item.name,
+          price: item.price,
+          quantity: item.quantity
+        })),
+        customerPhone: "6380832058"
+      };
+
+      const orderResponse = await axios.post(`${API}/orders`, orderData);
+      const orderId = orderResponse.data.order._id;
+
+      // Get Razorpay config
+      const configResponse = await axios.get(`${API}/payments/config`);
+      const razorpayKey = configResponse.data.key;
+
+      // Create Razorpay order
+      const paymentOrderResponse = await axios.post(`${API}/payments/create-order`, {
+        amount: totalAmount * 100, // Convert to paise
+        currency: "INR",
+        orderId: orderId
+      });
+
+      // Initialize Razorpay
+      const options = {
+        key: razorpayKey,
+        amount: paymentOrderResponse.data.amount,
+        currency: paymentOrderResponse.data.currency,
+        order_id: paymentOrderResponse.data.orderId,
+        name: "C2B - Click to Buy",
+        description: "Product Purchase",
+        image: "https://via.placeholder.com/150?text=C2B",
+        handler: async function (response) {
+          try {
+            // Verify payment
+            await axios.post(`${API}/payments/verify`, {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            });
+
+            toast({
+              title: "Payment Successful!",
+              description: "Your order has been placed successfully.",
+            });
+
+            // Clear cart
+            setCart([]);
+          } catch (error) {
+            toast({
+              title: "Payment Verification Failed",
+              description: "Please contact support with your payment details.",
+              variant: "destructive"
+            });
+          }
+        },
+        prefill: {
+          contact: "6380832058"
+        },
+        theme: {
+          color: "#9333EA"
+        },
+        modal: {
+          ondismiss: function() {
+            setPaymentLoading(false);
+            toast({
+              title: "Payment Cancelled",
+              description: "You can try again or use other payment methods.",
+            });
+          }
+        }
+      };
+
+      if (window.Razorpay) {
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+      } else {
+        throw new Error("Razorpay SDK not loaded");
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast({
+        title: "Payment Failed",
+        description: error.response?.data?.detail || "Unable to process payment. Try other payment methods.",
+        variant: "destructive"
+      });
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
   if (cart.length === 0) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center">
