@@ -2,10 +2,16 @@ from fastapi import APIRouter, HTTPException, Request
 from models.payment import PaymentOrderCreate, PaymentVerification
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+from pathlib import Path
 import razorpay
 import hmac
 import hashlib
 from motor.motor_asyncio import AsyncIOMotorClient
+
+# Load environment variables
+ROOT_DIR = Path(__file__).parent.parent
+load_dotenv(ROOT_DIR / '.env')
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
@@ -14,9 +20,11 @@ def get_database():
     client = AsyncIOMotorClient(mongo_url)
     return client[os.environ['DB_NAME']]
 
-# Initialize Razorpay client
+# Initialize Razorpay client with live keys
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'test_key')
 RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'test_secret')
+
+print(f"Razorpay initialized with Key ID: {RAZORPAY_KEY_ID[:15]}...")
 
 try:
     razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
