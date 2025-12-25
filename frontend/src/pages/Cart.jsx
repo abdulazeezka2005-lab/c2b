@@ -70,10 +70,22 @@ const Cart = ({ cart, setCart }) => {
     }
   };
 
-  const handleOnlinePayment = async () => {
-    setPaymentLoading(true);
+  const handlePaymentMethodSelect = (method) => {
+    setSelectedPayment(method);
+    setShowPaymentModal(true);
+  };
+
+  const copyToClipboard = (text, label) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied!",
+      description: `${label} copied to clipboard`,
+    });
+  };
+
+  const handleConfirmPayment = async () => {
     try {
-      // Create order in database first
+      // Save order to backend
       const orderData = {
         items: cart.map(item => ({
           productId: item._id,
@@ -81,75 +93,38 @@ const Cart = ({ cart, setCart }) => {
           price: item.price,
           quantity: item.quantity
         })),
-        customerPhone: "6380832058" // Your mobile number
+        customerPhone: "6380832058"
       };
 
-      const orderResponse = await axios.post(`${API}/orders`, orderData);
-      const orderId = orderResponse.data.order._id;
+      const response = await axios.post(`${API}/orders`, orderData);
+      
+      if (response.data.order) {
+        toast({
+          title: "Order Placed!",
+          description: `Your order ID: ${response.data.order._id}. We'll confirm once payment is received.`,
+        });
 
-      // Get Razorpay config
-      const configResponse = await axios.get(`${API}/payments/config`);
-      const razorpayKey = configResponse.data.key;
+        // Send confirmation via WhatsApp
+        const whatsappPhone = process.env.REACT_APP_WHATSAPP_PHONE || '916380832058';
+        const orderDetails = cart.map(item =>
+          `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`
+        ).join('\n');
+        
+        const message = `New Order Placed!\n\nOrder ID: ${response.data.order._id}\nPayment Method: ${selectedPayment}\n\n${orderDetails}\n\nTotal: ₹${totalAmount}\n\nWaiting for payment confirmation.`;
+        const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
 
-      // Create Razorpay order
-      const paymentOrderResponse = await axios.post(`${API}/payments/create-order`, {
-        amount: totalAmount * 100, // Convert to paise
-        currency: "INR",
-        orderId: orderId
-      });
-
-      // Initialize Razorpay
-      const options = {
-        key: razorpayKey,
-        amount: paymentOrderResponse.data.amount,
-        currency: paymentOrderResponse.data.currency,
-        order_id: paymentOrderResponse.data.orderId,
-        name: "C2B - Click to Buy",
-        description: "Product Purchase",
-        image: "https://via.placeholder.com/150?text=C2B",
-        handler: async function (response) {
-          try {
-            // Verify payment
-            await axios.post(`${API}/payments/verify`, {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature
-            });
-
-            toast({
-              title: "Payment Successful!",
-              description: "Your order has been placed successfully.",
-            });
-
-            // Clear cart
-            setCart([]);
-          } catch (error) {
-            toast({
-              title: "Payment Verification Failed",
-              description: "Please contact support with your payment details.",
-              variant: "destructive"
-            });
-          }
-        },
-        prefill: {
-          contact: "6380832058"
-        },
-        theme: {
-          color: "#9333EA" // Purple color
-        }
-      };
-
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
+        // Clear cart after order
+        setCart([]);
+        setShowPaymentModal(false);
+      }
     } catch (error) {
-      console.error('Payment error:', error);
+      console.error('Error creating order:', error);
       toast({
-        title: "Payment Failed",
-        description: error.response?.data?.detail || "Unable to process payment. Try WhatsApp order.",
+        title: "Error",
+        description: "Failed to place order. Please try again.",
         variant: "destructive"
       });
-    } finally {
-      setPaymentLoading(false);
     }
   };
 
