@@ -155,6 +155,16 @@ Please share more details.`;
 
       {/* Instagram Feed */}
       <InstagramFeed posts={instagramPosts} />
+
+      {/* Product Detail Modal */}
+      {showProductModal && selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setShowProductModal(false)}
+          onAddToCart={handleAddToCart}
+          onWhatsAppOrder={handleWhatsAppOrder}
+        />
+      )}
     </div>
   );
 };
