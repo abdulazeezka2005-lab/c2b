@@ -36,7 +36,7 @@ This project is designed with scalability, performance, and user experience in m
 ## 🏗️ Tech Stack
 
 * **Framework:** Emergent
-* **Frontend:** HTML, CSS, JavaScript
+* **Frontend:** React
 * **Backend:** (Add your backend – Node.js / Java / etc.)
 * **Database:** (MySQL / MongoDB / etc.)
 * **Version Control:** Git & GitHub
